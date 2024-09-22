@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>160</x>
-      <y>130</y>
+      <y>80</y>
       <width>831</width>
       <height>331</height>
      </rect>
@@ -64,6 +64,19 @@
          </widget>
         </item>
         <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
          <widget class="QRadioButton" name="clickControlStopAfterRadioButton">
           <property name="text">
            <string>Stop after</string>
@@ -91,6 +104,19 @@
            </property>
           </item>
          </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </widget>
@@ -121,9 +147,9 @@
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QRadioButton" name="fixedDelayRadioButton">
+         <widget class="QRadioButton" name="randomDelayRadioButton">
           <property name="text">
-           <string>Fixed</string>
+           <string>Random</string>
           </property>
          </widget>
         </item>
@@ -135,19 +161,6 @@
           <layout class="QHBoxLayout" name="horizontalLayout_5">
            <item>
             <widget class="QDoubleSpinBox" name="randomDelayStartDoubleSpinBox"/>
-           </item>
-           <item>
-            <spacer name="randomDelaySpacerHorizontal_lhs">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
            </item>
            <item>
             <widget class="QLabel" name="randomDelayAndLabel">
@@ -182,9 +195,22 @@
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="randomDelayRadioButton">
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="fixedDelayRadioButton">
           <property name="text">
-           <string>Random</string>
+           <string>Fixed</string>
           </property>
          </widget>
         </item>
@@ -265,14 +291,14 @@
             </widget>
            </item>
            <item>
-            <spacer name="horizontalSpacer">
+            <spacer name="verticalSpacer_2">
              <property name="orientation">
-              <enum>Qt::Horizontal</enum>
+              <enum>Qt::Vertical</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>40</width>
-               <height>20</height>
+               <width>20</width>
+               <height>40</height>
               </size>
              </property>
             </spacer>
