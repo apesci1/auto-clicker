@@ -4,10 +4,11 @@
 #include <QDebug>
 #include <QCursor>
 #include <QApplication>
+#include <QGuiApplication>
+#include <QScreen>
 #include <windows.h> // Include Windows API header
 #include <QKeyEvent>
 #include <QTimer>
-
 
 // Conversion helper function
 int convertToMilliseconds(double value, const QString &unit) {
@@ -34,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     // Set default values
     ui->clickControlTimeDoubleSpinBox->setValue(10);      // Default max clicks to 10
-    ui->fixedDelayDoubleSpinBox->setValue(1);      // Default fixed delay to 10
+    ui->fixedDelayDoubleSpinBox->setValue(1);      // Default fixed delay to 1
     ui->fixedDelayTimeComboBox->setCurrentText("Second(s)"); // Default fixed delay unit to seconds
     ui->randomDelayComboBox->setCurrentText("Second(s)"); // Default random delay unit to seconds
     ui->fixedPositionRadioButton->setChecked(true); // Default click position (at cursor)
@@ -55,7 +56,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->fixedDelayTimeComboBox, &QComboBox::currentTextChanged, this, &MainWindow::updateFixedDelayUnit);
     connect(ui->randomDelayComboBox, &QComboBox::currentTextChanged, this, &MainWindow::updateRandomDelayUnit);
 
-
     // Update coordinates every 100 ms
     QTimer *updateTimer = new QTimer(this);
     connect(updateTimer, &QTimer::timeout, this, &MainWindow::updateCoordinates);
@@ -67,7 +67,6 @@ MainWindow::MainWindow(QWidget *parent)
     // Connect the line edit text change signal to update the hotkey
     connect(ui->toggleKeyEdit, &QLineEdit::textChanged, this, &MainWindow::registerHotkey);
 }
-
 
 MainWindow::~MainWindow()
 {
@@ -148,7 +147,31 @@ void MainWindow::performClick()
         return;
     }
 
-    QPoint cursorPos = QCursor::pos();
+    QPoint cursorPos;
+
+    if (ui->fixedPositionRadioButton->isChecked()) {
+        cursorPos = QCursor::pos();
+    } else if (ui->dynamicPositionRadioButton->isChecked()) {
+        // Get bounding box coordinates
+        int x1 = ui->dyanmicPositionCoords_x1->value();
+        int y1 = ui->dyanmicPositionCoords_y1->value();
+        int x2 = ui->dyanmicPositionCoords_x2->value();
+        int y2 = ui->dyanmicPositionCoords_y2->value();
+
+        // Ensure coordinates are within screen bounds
+        QScreen *screen = QGuiApplication::primaryScreen();
+        QRect screenGeometry = screen->geometry();
+        x1 = qMax(0, qMin(x1, screenGeometry.width() - 1));
+        y1 = qMax(0, qMin(y1, screenGeometry.height() - 1));
+        x2 = qMax(0, qMin(x2, screenGeometry.width() - 1));
+        y2 = qMax(0, qMin(y2, screenGeometry.height() - 1));
+
+        // Generate a random position within the bounding box
+        int randomX = QRandomGenerator::global()->bounded(qMin(x1, x2), qMax(x1, x2) + 1);
+        int randomY = QRandomGenerator::global()->bounded(qMin(y1, y2), qMax(y1, y2) + 1);
+        cursorPos = QPoint(randomX, randomY);
+    }
+
     simulateMouseClick(cursorPos);
 
     clickCount++;
