@@ -34,7 +34,6 @@ private slots:
     void updateFixedDelayUnit();
     void updateRandomDelayUnit();
     void updateMaxClicksUnit();
-    void handleDelaySelection();
     void updateCoordinates();
     void registerHotkey();
 

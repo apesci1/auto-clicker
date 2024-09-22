@@ -14,13 +14,13 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QGroupBox" name="groupBox_7">
+   <widget class="QGroupBox" name="ControlGroupBox">
     <property name="geometry">
      <rect>
-      <x>120</x>
-      <y>-50</y>
-      <width>641</width>
-      <height>501</height>
+      <x>140</x>
+      <y>60</y>
+      <width>556</width>
+      <height>586</height>
      </rect>
     </property>
     <property name="title">
@@ -28,20 +28,20 @@
     </property>
     <layout class="QFormLayout" name="formLayout_2">
      <item row="0" column="0">
-      <widget class="QGroupBox" name="groupBox_6">
+      <widget class="QGroupBox" name="clickTypeGroupBox">
        <property name="title">
         <string>Click Type</string>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
-         <widget class="QRadioButton" name="radioButton_5">
+         <widget class="QRadioButton" name="clickTypeLeftRadioButton">
           <property name="text">
            <string>Left</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="radioButton_4">
+         <widget class="QRadioButton" name="clickTypeRightRadioButton">
           <property name="text">
            <string>Right</string>
           </property>
@@ -51,37 +51,30 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QGroupBox" name="groupBox_5">
+      <widget class="QGroupBox" name="clickControlGroupBox">
        <property name="title">
         <string>How Many Clicks</string>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QRadioButton" name="radioButton_2">
+         <widget class="QRadioButton" name="clickControlForverRadioButton">
           <property name="text">
            <string>Forever</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="radioButton_3">
+         <widget class="QRadioButton" name="clickControlStopAfterRadioButton">
           <property name="text">
            <string>Stop after</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="spinBox_6">
-          <property name="minimum">
-           <number>0</number>
-          </property>
-          <property name="maximum">
-           <number>99999</number>
-          </property>
-         </widget>
+         <widget class="QDoubleSpinBox" name="clickControlTimeDoubleSpinBox"/>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox_4">
+         <widget class="QComboBox" name="clickControlTimeComboBox">
           <item>
            <property name="text">
             <string>Millisecond(s)</string>
@@ -103,13 +96,13 @@
       </widget>
      </item>
      <item row="1" column="0">
-      <widget class="QGroupBox" name="groupBox_9">
+      <widget class="QGroupBox" name="toggleKeyGroupBox">
        <property name="title">
         <string>Toggle Key</string>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <item>
-         <widget class="QLineEdit" name="lineEdit_key">
+         <widget class="QLineEdit" name="toggleKeyEdit">
           <property name="text">
            <string>F11</string>
           </property>
@@ -125,20 +118,23 @@
        </property>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
+         <widget class="QRadioButton" name="fixedDelayRadioButton">
+          <property name="text">
+           <string>Fixed</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QGroupBox" name="groupBox_4">
           <property name="title">
-           <string>Fixed</string>
+           <string/>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_6">
            <item>
-            <widget class="QSpinBox" name="spinBox_5">
-             <property name="maximum">
-              <number>99999</number>
-             </property>
-            </widget>
+            <widget class="QDoubleSpinBox" name="fixedDelayDoubleSpinBox"/>
            </item>
            <item>
-            <widget class="QComboBox" name="comboBox_3">
+            <widget class="QComboBox" name="fixedDelayTimeComboBox">
              <item>
               <property name="text">
                <string>Millisecond(s)</string>
@@ -160,20 +156,23 @@
          </widget>
         </item>
         <item>
+         <widget class="QRadioButton" name="randomDelayRadioButton">
+          <property name="text">
+           <string>Random</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QGroupBox" name="randomDelayGroup">
           <property name="title">
-           <string>Random</string>
+           <string/>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_5">
            <item>
-            <widget class="QSpinBox" name="spinBox_3">
-             <property name="maximum">
-              <number>99999</number>
-             </property>
-            </widget>
+            <widget class="QDoubleSpinBox" name="randomDelayStartDoubleSpinBox"/>
            </item>
            <item>
-            <spacer name="horizontalSpacer">
+            <spacer name="randomDelaySpacerHorizontal_lhs">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -186,14 +185,14 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLabel" name="label">
+            <widget class="QLabel" name="randomDelayAndLabel">
              <property name="text">
               <string>and</string>
              </property>
             </widget>
            </item>
            <item>
-            <spacer name="horizontalSpacer_2">
+            <spacer name="randomDelaySpacerHorizontal_rhs">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -206,14 +205,10 @@
             </spacer>
            </item>
            <item>
-            <widget class="QSpinBox" name="spinBox_4">
-             <property name="maximum">
-              <number>99999</number>
-             </property>
-            </widget>
+            <widget class="QDoubleSpinBox" name="randomDelayEndDoubleSpinBox"/>
            </item>
            <item>
-            <widget class="QComboBox" name="comboBox_2">
+            <widget class="QComboBox" name="randomDelayComboBox">
              <item>
               <property name="text">
                <string>Millisecond(s)</string>
@@ -238,39 +233,39 @@
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QGroupBox" name="groupBox">
+      <widget class="QGroupBox" name="clickPositionGroupBox">
        <property name="title">
         <string>Where To Click</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <widget class="QGroupBox" name="groupBox_2">
+         <widget class="QGroupBox" name="fixedPositionGroupBox">
           <property name="title">
            <string/>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout">
            <item>
-            <widget class="QRadioButton" name="radioButton">
+            <widget class="QRadioButton" name="fixedPositionRadioButton">
              <property name="text">
               <string>Fixed Position</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QGroupBox" name="groupBox_12">
+            <widget class="QGroupBox" name="fixedPositionLabelGroupBox">
              <property name="title">
               <string/>
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout_9">
               <item>
-               <widget class="QLabel" name="label_x">
+               <widget class="QLabel" name="fixedPositionLabel_x">
                 <property name="text">
                  <string>X: 0</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QLabel" name="label_y">
+               <widget class="QLabel" name="fixedPositionLabel_y">
                 <property name="text">
                  <string>Y: 0</string>
                 </property>
@@ -283,24 +278,53 @@
          </widget>
         </item>
         <item>
-         <widget class="QGroupBox" name="groupBox_10">
+         <widget class="QGroupBox" name="dynamicPositionGroupBox">
           <property name="title">
            <string/>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_7">
            <item>
-            <widget class="QRadioButton" name="radioButton_6">
+            <widget class="QRadioButton" name="dynamicPositionRadioButton">
              <property name="text">
               <string>Inside Bounding Box</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QGroupBox" name="groupBox_11">
+            <widget class="QGroupBox" name="dyamicPositionCoordsGroupBox">
              <property name="title">
               <string/>
              </property>
-             <layout class="QHBoxLayout" name="horizontalLayout_8"/>
+             <layout class="QHBoxLayout" name="horizontalLayout_8">
+              <item>
+               <widget class="QSpinBox" name="dyanmicPositionCoords_x1">
+                <property name="maximum">
+                 <number>9999</number>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QSpinBox" name="dyanmicPositionCoords_y1">
+                <property name="maximum">
+                 <number>9999</number>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QSpinBox" name="dyanmicPositionCoords_x2">
+                <property name="maximum">
+                 <number>9999</number>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QSpinBox" name="dyanmicPositionCoords_y2">
+                <property name="maximum">
+                 <number>9999</number>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </item>
           </layout>
