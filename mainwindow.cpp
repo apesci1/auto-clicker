@@ -10,7 +10,7 @@
 
 
 // Conversion helper function
-int convertToMilliseconds(int value, const QString &unit) {
+int convertToMilliseconds(double value, const QString &unit) {
     if (unit == "Second(s)") {
         return value * 1000;  // Convert seconds to milliseconds
     } else if (unit == "Minute(s)") {
@@ -33,8 +33,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     // Set default values
-    ui->clickControlTimeSpinBox->setValue(10);      // Default max clicks to 10
-    ui->fixedDelaySpinBox->setValue(1);      // Default fixed delay to 10
+    ui->clickControlTimeDoubleSpinBox->setValue(10);      // Default max clicks to 10
+    ui->fixedDelayDoubleSpinBox->setValue(1);      // Default fixed delay to 10
     ui->fixedDelayTimeComboBox->setCurrentText("Second(s)"); // Default fixed delay unit to seconds
     ui->randomDelayComboBox->setCurrentText("Second(s)"); // Default random delay unit to seconds
     ui->fixedPositionRadioButton->setChecked(true); // Default click position (at cursor)
@@ -47,13 +47,14 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->clickTypeLeftRadioButton, &QRadioButton::toggled, this, &MainWindow::updateClickType);
     connect(ui->clickControlForverRadioButton, &QRadioButton::toggled, this, &MainWindow::updateClickCount);
     connect(ui->clickControlStopAfterRadioButton, &QRadioButton::toggled, this, &MainWindow::updateClickCount);
-    connect(ui->clickControlTimeSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &MainWindow::updateMaxClicks);
-    connect(ui->fixedDelaySpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &MainWindow::updateFixedDelay);
-    connect(ui->randomDelayStartSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &MainWindow::updateRandomMinDelay);
-    connect(ui->randomDelayEndSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &MainWindow::updateRandomMaxDelay);
+    connect(ui->clickControlTimeDoubleSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &MainWindow::updateMaxClicks);
+    connect(ui->fixedDelayDoubleSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &MainWindow::updateFixedDelay);
+    connect(ui->randomDelayStartDoubleSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &MainWindow::updateRandomMinDelay);
+    connect(ui->randomDelayEndDoubleSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &MainWindow::updateRandomMaxDelay);
     connect(ui->clickControlTimeComboBox, &QComboBox::currentTextChanged, this, &MainWindow::updateMaxClicksUnit);
     connect(ui->fixedDelayTimeComboBox, &QComboBox::currentTextChanged, this, &MainWindow::updateFixedDelayUnit);
     connect(ui->randomDelayComboBox, &QComboBox::currentTextChanged, this, &MainWindow::updateRandomDelayUnit);
+
 
     // Update coordinates every 100 ms
     QTimer *updateTimer = new QTimer(this);
@@ -120,11 +121,11 @@ void MainWindow::startClicking()
 {
     clicking = true;
     clickCount = 0; // Reset click count
-    maxClicks = ui->clickControlForverRadioButton->isChecked() ? 0 : ui->clickControlTimeSpinBox->value(); // Forever or stop after
+    maxClicks = ui->clickControlForverRadioButton->isChecked() ? 0 : ui->clickControlTimeDoubleSpinBox->value(); // Forever or stop after
 
-    randomDelay = ui->randomDelayStartSpinBox->value() > 0 || ui->randomDelayEndSpinBox->value() > 0;
+    randomDelay = ui->randomDelayStartDoubleSpinBox->value() > 0 || ui->randomDelayEndDoubleSpinBox->value() > 0;
     // Convert fixed delay to milliseconds based on the selected unit
-    fixedDelay = convertToMilliseconds(ui->fixedDelaySpinBox->value(), ui->fixedDelayTimeComboBox->currentText());
+    fixedDelay = convertToMilliseconds(ui->fixedDelayDoubleSpinBox->value(), ui->fixedDelayTimeComboBox->currentText());
 
     qDebug() << "Clicking started. Max Clicks:" << maxClicks << ", Fixed Delay:" << fixedDelay << "ms";
 
@@ -153,9 +154,9 @@ void MainWindow::performClick()
     clickCount++;
     qDebug() << "Click performed at:" << cursorPos << ". Total Clicks:" << clickCount;
 
-    // Handle random delays if applicable
-    if (randomDelay) {
-        // Ensure randomMinDelay and randomMaxDelay are valid
+    // Check which delay option is selected
+    if (ui->randomDelayRadioButton->isChecked()) {
+        // Handle random delays if applicable
         if (randomMinDelay >= 0 && randomMaxDelay > randomMinDelay) {
             int randomDelayDuration = QRandomGenerator::global()->bounded(randomMinDelay, randomMaxDelay);
             clickTimer->start(randomDelayDuration);
@@ -165,6 +166,7 @@ void MainWindow::performClick()
             clickTimer->start(fixedDelay);
         }
     } else {
+        // Use fixed delay
         clickTimer->start(fixedDelay);
     }
 }
@@ -208,32 +210,32 @@ void MainWindow::updateClickCount()
         maxClicks = 0; // Forever
         qDebug() << "Max clicks set to: Forever";
     } else {
-        maxClicks = ui->clickControlTimeSpinBox->value(); // Set to spin box value
+        maxClicks = ui->clickControlTimeDoubleSpinBox->value(); // Set to spin box value
         qDebug() << "Max clicks set to:" << maxClicks;
     }
 }
 
-void MainWindow::updateMaxClicks(int value)
+void MainWindow::updateMaxClicks(double value)
 {
     maxClicks =  convertToMilliseconds(value, ui->clickControlTimeComboBox->currentText());
     qDebug() << "Max clicks updated to:" << maxClicks;
 }
 
-void MainWindow::updateFixedDelay(int value)
+void MainWindow::updateFixedDelay(double value)
 {
     // Convert the fixed delay to milliseconds
     fixedDelay = convertToMilliseconds(value, ui->fixedDelayTimeComboBox->currentText());
     qDebug() << "Fixed delay updated to:" << fixedDelay << "ms";
 }
 
-void MainWindow::updateRandomMinDelay(int value)
+void MainWindow::updateRandomMinDelay(double value)
 {
     // Convert the random min delay to milliseconds
     randomMinDelay = convertToMilliseconds(value, ui->randomDelayComboBox->currentText());
     qDebug() << "Random min delay updated to:" << randomMinDelay << "ms";
 }
 
-void MainWindow::updateRandomMaxDelay(int value)
+void MainWindow::updateRandomMaxDelay(double value)
 {
     // Convert the random max delay to milliseconds
     randomMaxDelay = convertToMilliseconds(value, ui->randomDelayComboBox->currentText());
@@ -243,20 +245,20 @@ void MainWindow::updateRandomMaxDelay(int value)
 void MainWindow::updateMaxClicksUnit()
 {
     // Update the fixed delay based on the new unit
-    updateMaxClicks(ui->clickControlTimeSpinBox->value());
+    updateMaxClicks(ui->clickControlTimeDoubleSpinBox->value());
 }
 
 void MainWindow::updateFixedDelayUnit()
 {
     // Update the fixed delay based on the new unit
-    updateFixedDelay(ui->fixedDelaySpinBox->value());
+    updateFixedDelay(ui->fixedDelayDoubleSpinBox->value());
 }
 
 void MainWindow::updateRandomDelayUnit()
 {
     // Update both random min and max delays based on the new unit
-    updateRandomMinDelay(ui->randomDelayStartSpinBox->value());
-    updateRandomMaxDelay(ui->randomDelayEndSpinBox->value());
+    updateRandomMinDelay(ui->randomDelayStartDoubleSpinBox->value());
+    updateRandomMaxDelay(ui->randomDelayEndDoubleSpinBox->value());
 }
 
 void MainWindow::updateCoordinates() {

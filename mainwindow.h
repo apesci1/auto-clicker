@@ -27,10 +27,10 @@ private slots:
     void performClick();
     void updateClickType();
     void updateClickCount();
-    void updateMaxClicks(int value);
-    void updateFixedDelay(int value);
-    void updateRandomMinDelay(int value);
-    void updateRandomMaxDelay(int value);
+    void updateMaxClicks(double value);
+    void updateFixedDelay(double value);
+    void updateRandomMinDelay(double value);
+    void updateRandomMaxDelay(double value);
     void updateFixedDelayUnit();
     void updateRandomDelayUnit();
     void updateMaxClicksUnit();
