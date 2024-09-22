@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QTimer>
 #include <QPoint>
+#include "include/QHotKey/qhotkey.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -30,16 +31,12 @@ private slots:
     void updateFixedDelay(int value);
     void updateRandomMinDelay(int value);
     void updateRandomMaxDelay(int value);
-
-
-    void updateFixedDelayUnit();  // Declaration for updating the fixed delay unit
+    void updateFixedDelayUnit();
     void updateRandomDelayUnit();
     void updateMaxClicksUnit();
-
     void handleDelaySelection();
-
-
-
+    void updateCoordinates();
+    void registerHotkey();
 
 private:
     Ui::MainWindow *ui;
@@ -51,7 +48,7 @@ private:
     int fixedDelay;
     int randomMinDelay;
     int randomMaxDelay;
-
+    QHotkey *hotkey;
     void simulateMouseClick(const QPoint &position); // Add this line
 };
 

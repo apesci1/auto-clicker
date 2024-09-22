@@ -6,6 +6,8 @@
 #include <QApplication>
 #include <windows.h> // Include Windows API header
 #include <QKeyEvent>
+#include <QTimer>
+
 
 // Conversion helper function
 int convertToMilliseconds(int value, const QString &unit) {
@@ -31,20 +33,14 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-
-
     // Set default values
     ui->spinBox_6->setValue(10);      // Default max clicks to 10
-    ui->spinBox_5->setValue(10);      // Default fixed delay to 10
-    // ui->spinBox_3->setValue(1);       // Default random min delay to 1
-    // ui->spinBox_4->setValue(5);       // Default random max delay to 5
+    ui->spinBox_5->setValue(1);      // Default fixed delay to 10
     ui->comboBox_3->setCurrentText("Second(s)"); // Default fixed delay unit to seconds
     ui->comboBox_2->setCurrentText("Second(s)"); // Default random delay unit to seconds
     ui->radioButton->setChecked(true); // Default click position (at cursor)
     ui->radioButton_5->setChecked(true); // Default click type to left click
     ui->radioButton_2->setChecked(true); // Default to stop after max clicks
-
-
 
     connect(clickTimer, &QTimer::timeout, this, &MainWindow::performClick);
 
@@ -56,22 +52,24 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->spinBox_5, QOverload<int>::of(&QSpinBox::valueChanged), this, &MainWindow::updateFixedDelay);
     connect(ui->spinBox_3, QOverload<int>::of(&QSpinBox::valueChanged), this, &MainWindow::updateRandomMinDelay);
     connect(ui->spinBox_4, QOverload<int>::of(&QSpinBox::valueChanged), this, &MainWindow::updateRandomMaxDelay);
-
-
     connect(ui->comboBox_4, &QComboBox::currentTextChanged, this, &MainWindow::updateMaxClicksUnit);
-
-    // Connect combobox for fixed delay units
     connect(ui->comboBox_3, &QComboBox::currentTextChanged, this, &MainWindow::updateFixedDelayUnit);
-
-    // Connect combobox for random delay units
     connect(ui->comboBox_2, &QComboBox::currentTextChanged, this, &MainWindow::updateRandomDelayUnit);
-
-    // Handle delay selection logic
     connect(ui->spinBox_5, QOverload<int>::of(&QSpinBox::valueChanged), this, &MainWindow::handleDelaySelection);
     connect(ui->spinBox_3, QOverload<int>::of(&QSpinBox::valueChanged), this, &MainWindow::handleDelaySelection);
 
+    // Update coordinates every 100 ms
+    QTimer *updateTimer = new QTimer(this);
+    connect(updateTimer, &QTimer::timeout, this, &MainWindow::updateCoordinates);
+    updateTimer->start(100);
 
+    // Register the hotkey initially
+    registerHotkey();
+
+    // Connect the line edit text change signal to update the hotkey
+    connect(ui->lineEdit_key, &QLineEdit::textChanged, this, &MainWindow::registerHotkey);
 }
+
 
 MainWindow::~MainWindow()
 {
@@ -80,7 +78,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_F10) {
+    QString toggleKey = ui->lineEdit_key->text();
+    QKeySequence keySequence(toggleKey);
+
+    // Check if the pressed key matches the toggle key
+    if (keySequence.matches(QKeySequence(event->key())) == QKeySequence::ExactMatch) {
         if (clicking) {
             qDebug() << "Stopping clicking...";
             stopClicking();
@@ -89,6 +91,32 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             startClicking();
         }
     }
+}
+
+void MainWindow::registerHotkey() {
+    // Unregister the previous hotkey if it exists
+    if (hotkey) {
+        delete hotkey;
+    }
+
+    QString toggleKey = ui->lineEdit_key->text();
+    hotkey = new QHotkey(QKeySequence(toggleKey), true, this);
+
+    if (hotkey->isRegistered()) {
+        qDebug() << "Hotkey registered:" << toggleKey;
+    } else {
+        qDebug() << "Failed to register hotkey:" << toggleKey;
+    }
+
+    connect(hotkey, &QHotkey::activated, this, [&]() {
+        if (clicking) {
+            qDebug() << "Stopping clicking...";
+            stopClicking();
+        } else {
+            qDebug() << "Starting clicking...";
+            startClicking();
+        }
+    });
 }
 
 void MainWindow::startClicking()
@@ -246,4 +274,10 @@ void MainWindow::handleDelaySelection()
     ui->spinBox_3->setEnabled(!fixedDelayEnabled);
     ui->spinBox_4->setEnabled(!fixedDelayEnabled);
     ui->comboBox_2->setEnabled(!fixedDelayEnabled);  // Disable random delay unit comboBox
+}
+
+void MainWindow::updateCoordinates() {
+    QPoint cursorPos = QCursor::pos();
+    ui->label_x->setText(QString("X: %1").arg(cursorPos.x()));
+    ui->label_y->setText(QString("Y: %1").arg(cursorPos.y()));
 }

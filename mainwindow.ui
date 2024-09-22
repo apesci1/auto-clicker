@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>992</width>
-    <height>467</height>
+    <width>955</width>
+    <height>735</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,10 +17,10 @@
    <widget class="QGroupBox" name="groupBox_7">
     <property name="geometry">
      <rect>
-      <x>220</x>
-      <y>30</y>
-      <width>511</width>
-      <height>371</height>
+      <x>120</x>
+      <y>-50</y>
+      <width>641</width>
+      <height>501</height>
      </rect>
     </property>
     <property name="title">
@@ -102,16 +102,16 @@
        </layout>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QGroupBox" name="groupBox">
+     <item row="1" column="0">
+      <widget class="QGroupBox" name="groupBox_9">
        <property name="title">
-        <string>Where To Click</string>
+        <string>Toggle Key</string>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
         <item>
-         <widget class="QRadioButton" name="radioButton">
+         <widget class="QLineEdit" name="lineEdit_key">
           <property name="text">
-           <string>Current Cursor Position</string>
+           <string>F11</string>
           </property>
          </widget>
         </item>
@@ -119,7 +119,7 @@
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QGroupBox" name="groupBox_8">
+      <widget class="QGroupBox" name="delayGroupBox">
        <property name="title">
         <string>Delay Clicks</string>
        </property>
@@ -160,7 +160,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QGroupBox" name="groupBox_3">
+         <widget class="QGroupBox" name="randomDelayGroup">
           <property name="title">
            <string>Random</string>
           </property>
@@ -237,6 +237,78 @@
        </layout>
       </widget>
      </item>
+     <item row="1" column="1">
+      <widget class="QGroupBox" name="groupBox">
+       <property name="title">
+        <string>Where To Click</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QGroupBox" name="groupBox_2">
+          <property name="title">
+           <string/>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QRadioButton" name="radioButton">
+             <property name="text">
+              <string>Fixed Position</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox_12">
+             <property name="title">
+              <string/>
+             </property>
+             <layout class="QHBoxLayout" name="horizontalLayout_9">
+              <item>
+               <widget class="QLabel" name="label_x">
+                <property name="text">
+                 <string>X: 0</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_y">
+                <property name="text">
+                 <string>Y: 0</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox_10">
+          <property name="title">
+           <string/>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_7">
+           <item>
+            <widget class="QRadioButton" name="radioButton_6">
+             <property name="text">
+              <string>Inside Bounding Box</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox_11">
+             <property name="title">
+              <string/>
+             </property>
+             <layout class="QHBoxLayout" name="horizontalLayout_8"/>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
     </layout>
    </widget>
   </widget>
@@ -245,7 +317,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>992</width>
+     <width>955</width>
      <height>21</height>
     </rect>
    </property>
