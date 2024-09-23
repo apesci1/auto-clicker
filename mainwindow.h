@@ -36,6 +36,8 @@ private slots:
     void updateMaxClicksUnit();
     void updateCoordinates();
     void registerHotkey();
+    void assignToggleKey();
+    void resetToggleKey();
 
 private:
     Ui::MainWindow *ui;

@@ -65,7 +65,8 @@ MainWindow::MainWindow(QWidget *parent)
     registerHotkey();
 
     // Connect the line edit text change signal to update the hotkey
-    connect(ui->toggleKeyEdit, &QLineEdit::textChanged, this, &MainWindow::registerHotkey);
+    connect(ui->assignToggleKeyButton, &QPushButton::clicked, this, &MainWindow::assignToggleKey);
+    connect(ui->resetToggleKeyButton, &QPushButton::clicked, this, &MainWindow::resetToggleKey);
 }
 
 MainWindow::~MainWindow()
@@ -90,13 +91,35 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     }
 }
 
+
+void MainWindow::assignToggleKey() {
+    QString toggleKey = ui->toggleKeyEdit->text();
+    if (!toggleKey.isEmpty()) {
+        registerHotkey(); // Register the hotkey with the new key
+        qDebug() << "Toggle key assigned to:" << toggleKey;
+    }
+}
+
+void MainWindow::resetToggleKey() {
+    ui->toggleKeyEdit->setText("F11"); // Reset to F11
+    registerHotkey(); // Register the hotkey with the default key
+    qDebug() << "Toggle key reset to F11";
+}
+
 void MainWindow::registerHotkey() {
     // Unregister the previous hotkey if it exists
     if (hotkey) {
         delete hotkey;
     }
 
+    // Get the toggle key from the UI
     QString toggleKey = ui->toggleKeyEdit->text();
+
+    // Use a default value if no key is set
+    if (toggleKey.isEmpty()) {
+        toggleKey = "F11"; // Default hotkey
+    }
+
     hotkey = new QHotkey(QKeySequence(toggleKey), true, this);
 
     if (hotkey->isRegistered()) {
@@ -115,7 +138,6 @@ void MainWindow::registerHotkey() {
         }
     });
 }
-
 void MainWindow::startClicking()
 {
     clicking = true;

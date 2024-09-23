@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include <QApplication>
 #include <QDebug>
-#include "include/QHotKey/qhotkey.h"
+#include <QHotKey>
 
 int main(int argc, char *argv[])
 {
