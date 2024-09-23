@@ -35,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     // Set default values
     ui->clickControlTimeDoubleSpinBox->setValue(10);      // Default max clicks to 10
+    ui->fixedDelayRadioButton->setChecked(true);
     ui->fixedDelayDoubleSpinBox->setValue(1);      // Default fixed delay to 1
     ui->fixedDelayTimeComboBox->setCurrentText("Second(s)"); // Default fixed delay unit to seconds
     ui->randomDelayComboBox->setCurrentText("Second(s)"); // Default random delay unit to seconds
@@ -52,7 +53,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->fixedDelayDoubleSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &MainWindow::updateFixedDelay);
     connect(ui->randomDelayStartDoubleSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &MainWindow::updateRandomMinDelay);
     connect(ui->randomDelayEndDoubleSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &MainWindow::updateRandomMaxDelay);
-    connect(ui->clickControlTimeComboBox, &QComboBox::currentTextChanged, this, &MainWindow::updateMaxClicksUnit);
+    connect(ui->clickControlComboBox, &QComboBox::currentTextChanged, this, &MainWindow::updateMaxClicksUnit);
     connect(ui->fixedDelayTimeComboBox, &QComboBox::currentTextChanged, this, &MainWindow::updateFixedDelayUnit);
     connect(ui->randomDelayComboBox, &QComboBox::currentTextChanged, this, &MainWindow::updateRandomDelayUnit);
 
@@ -262,7 +263,7 @@ void MainWindow::updateClickCount()
 
 void MainWindow::updateMaxClicks(double value)
 {
-    maxClicks =  convertToMilliseconds(value, ui->clickControlTimeComboBox->currentText());
+    maxClicks =  convertToMilliseconds(value, ui->clickControlComboBox->currentText());
     qDebug() << "Max clicks updated to:" << maxClicks;
 }
 

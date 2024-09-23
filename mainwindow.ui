@@ -87,7 +87,7 @@
          <widget class="QDoubleSpinBox" name="clickControlTimeDoubleSpinBox"/>
         </item>
         <item>
-         <widget class="QComboBox" name="clickControlTimeComboBox">
+         <widget class="QComboBox" name="clickControlComboBox">
           <item>
            <property name="text">
             <string>Millisecond(s)</string>
@@ -101,6 +101,11 @@
           <item>
            <property name="text">
             <string>Minute(s)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Click(s)</string>
            </property>
           </item>
          </widget>
