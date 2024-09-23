@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QTimer>
 #include <QPoint>
+#include <QElapsedTimer>
 #include "include/QHotKey/qhotkey.h"
 
 QT_BEGIN_NAMESPACE
@@ -49,6 +50,7 @@ private:
     int fixedDelay;
     int randomMinDelay;
     int randomMaxDelay;
+    QElapsedTimer elapsedTimer;
     QHotkey *hotkey;
     void simulateMouseClick(const QPoint &position); // Add this line
 };

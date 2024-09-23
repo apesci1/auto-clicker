@@ -84,7 +84,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QDoubleSpinBox" name="clickControlTimeDoubleSpinBox"/>
+         <widget class="QDoubleSpinBox" name="clickControlTimeDoubleSpinBox">
+          <property name="maximum">
+           <double>9999.000000000000000</double>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QComboBox" name="clickControlComboBox">
@@ -138,7 +142,7 @@
         <item>
          <widget class="QLineEdit" name="toggleKeyEdit">
           <property name="text">
-           <string>F11</string>
+           <string>F1</string>
           </property>
          </widget>
         </item>
@@ -338,7 +342,11 @@
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_5">
            <item>
-            <widget class="QDoubleSpinBox" name="randomDelayStartDoubleSpinBox"/>
+            <widget class="QDoubleSpinBox" name="randomDelayStartDoubleSpinBox">
+             <property name="maximum">
+              <double>9999.000000000000000</double>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QLabel" name="randomDelayAndLabel">
@@ -348,7 +356,11 @@
             </widget>
            </item>
            <item>
-            <widget class="QDoubleSpinBox" name="randomDelayEndDoubleSpinBox"/>
+            <widget class="QDoubleSpinBox" name="randomDelayEndDoubleSpinBox">
+             <property name="maximum">
+              <double>9999.000000000000000</double>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QComboBox" name="randomDelayComboBox">

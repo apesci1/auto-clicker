@@ -9,6 +9,7 @@
 #include <windows.h> // Include Windows API header
 #include <QKeyEvent>
 #include <QTimer>
+#include <QElapsedTimer>
 
 // Conversion helper function
 int convertToMilliseconds(double value, const QString &unit) {
@@ -36,12 +37,14 @@ MainWindow::MainWindow(QWidget *parent)
     // Set default values
     ui->clickControlTimeDoubleSpinBox->setValue(10);      // Default max clicks to 10
     ui->fixedDelayRadioButton->setChecked(true);
-    ui->fixedDelayDoubleSpinBox->setValue(1);      // Default fixed delay to 1
+    ui->fixedDelayDoubleSpinBox->setValue(0);      // Default fixed delay to 1
     ui->fixedDelayTimeComboBox->setCurrentText("Second(s)"); // Default fixed delay unit to seconds
     ui->randomDelayComboBox->setCurrentText("Second(s)"); // Default random delay unit to seconds
     ui->fixedPositionRadioButton->setChecked(true); // Default click position (at cursor)
     ui->clickTypeLeftRadioButton->setChecked(true); // Default click type to left click
     ui->clickControlForverRadioButton->setChecked(true); // Default to stop after max clicks
+
+    elapsedTimer = QElapsedTimer();
 
     connect(clickTimer, &QTimer::timeout, this, &MainWindow::performClick);
 
@@ -68,6 +71,8 @@ MainWindow::MainWindow(QWidget *parent)
     // Connect the line edit text change signal to update the hotkey
     connect(ui->assignToggleKeyButton, &QPushButton::clicked, this, &MainWindow::assignToggleKey);
     connect(ui->resetToggleKeyButton, &QPushButton::clicked, this, &MainWindow::resetToggleKey);
+
+
 }
 
 MainWindow::~MainWindow()
@@ -102,9 +107,9 @@ void MainWindow::assignToggleKey() {
 }
 
 void MainWindow::resetToggleKey() {
-    ui->toggleKeyEdit->setText("F11"); // Reset to F11
+    ui->toggleKeyEdit->setText("F1"); // Reset to F1
     registerHotkey(); // Register the hotkey with the default key
-    qDebug() << "Toggle key reset to F11";
+    qDebug() << "Toggle key reset to F1";
 }
 
 void MainWindow::registerHotkey() {
@@ -118,7 +123,7 @@ void MainWindow::registerHotkey() {
 
     // Use a default value if no key is set
     if (toggleKey.isEmpty()) {
-        toggleKey = "F11"; // Default hotkey
+        toggleKey = "F1"; // Default hotkey
     }
 
     hotkey = new QHotkey(QKeySequence(toggleKey), true, this);
@@ -143,7 +148,22 @@ void MainWindow::startClicking()
 {
     clicking = true;
     clickCount = 0; // Reset click count
-    maxClicks = ui->clickControlForverRadioButton->isChecked() ? 0 : ui->clickControlTimeDoubleSpinBox->value(); // Forever or stop after
+
+    // Determine the stopping condition based on the selected control type
+    if (ui->clickControlForverRadioButton->isChecked()) {
+        maxClicks = 0; // Forever
+    } else {
+        double value = ui->clickControlTimeDoubleSpinBox->value();
+        QString unit = ui->clickControlComboBox->currentText();
+
+        if (unit == "Click(s)") {
+            maxClicks = value; // Set max clicks directly
+        } else {
+            maxClicks = 0; // Reset maxClicks for time-based control
+            // Start the elapsed timer
+            elapsedTimer.start();
+        }
+    }
 
     randomDelay = ui->randomDelayStartDoubleSpinBox->value() > 0 || ui->randomDelayEndDoubleSpinBox->value() > 0;
     // Convert fixed delay to milliseconds based on the selected unit
@@ -154,7 +174,6 @@ void MainWindow::startClicking()
     // Start with fixed delay
     clickTimer->start(fixedDelay);
 }
-
 void MainWindow::stopClicking()
 {
     clicking = false;
@@ -164,12 +183,20 @@ void MainWindow::stopClicking()
 
 void MainWindow::performClick()
 {
-    if (maxClicks > 0 && clickCount >= maxClicks) {
-        qDebug() << "Max clicks reached. Stopping...";
-        stopClicking();
-        return;
+    // Check for time-based stopping condition
+    if (!ui->clickControlForverRadioButton->isChecked()) {
+        double value = ui->clickControlTimeDoubleSpinBox->value();
+        QString unit = ui->clickControlComboBox->currentText();
+        int durationInMilliseconds = convertToMilliseconds(value, unit);
+
+        if (elapsedTimer.elapsed() >= durationInMilliseconds) {
+            qDebug() << "Time limit reached. Stopping...";
+            stopClicking();
+            return;
+        }
     }
 
+    // Existing click logic
     QPoint cursorPos;
 
     if (ui->fixedPositionRadioButton->isChecked()) {
@@ -216,6 +243,8 @@ void MainWindow::performClick()
         clickTimer->start(fixedDelay);
     }
 }
+
+
 
 void MainWindow::simulateMouseClick(const QPoint &position)
 {
