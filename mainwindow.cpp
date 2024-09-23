@@ -152,16 +152,19 @@ void MainWindow::startClicking()
     // Determine the stopping condition based on the selected control type
     if (ui->clickControlForverRadioButton->isChecked()) {
         maxClicks = 0; // Forever
+        qDebug() << "Clicking will continue forever.";
     } else {
         double value = ui->clickControlTimeDoubleSpinBox->value();
         QString unit = ui->clickControlComboBox->currentText();
 
         if (unit == "Click(s)") {
             maxClicks = value; // Set max clicks directly
+            qDebug() << "Clicking will stop after" << maxClicks << "clicks.";
         } else {
             maxClicks = 0; // Reset maxClicks for time-based control
             // Start the elapsed timer
             elapsedTimer.start();
+            qDebug() << "Clicking will stop after" << value << unit << ".";
         }
     }
 
@@ -169,7 +172,7 @@ void MainWindow::startClicking()
     // Convert fixed delay to milliseconds based on the selected unit
     fixedDelay = convertToMilliseconds(ui->fixedDelayDoubleSpinBox->value(), ui->fixedDelayTimeComboBox->currentText());
 
-    qDebug() << "Clicking started. Max Clicks:" << maxClicks << ", Fixed Delay:" << fixedDelay << "ms";
+    qDebug() << "Clicking started. Fixed Delay:" << fixedDelay << "ms";
 
     // Start with fixed delay
     clickTimer->start(fixedDelay);
@@ -190,7 +193,7 @@ void MainWindow::performClick()
         int durationInMilliseconds = convertToMilliseconds(value, unit);
 
         if (elapsedTimer.elapsed() >= durationInMilliseconds) {
-            qDebug() << "Time limit reached. Stopping...";
+            qDebug() << "Time limit of" << value << unit << "reached. Stopping...";
             stopClicking();
             return;
         }
