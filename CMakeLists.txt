@@ -25,8 +25,18 @@ set(PROJECT_SOURCES
     include/QHotKey/qhotkey.h
     include/QHotKey/qhotkey_p.h
     include/QHotKey/qhotkey.cpp
-    include/QHotKey/qhotkey_win.cpp
 )
+
+# Determine the platform and include the appropriate QHotkey source file
+if(WIN32)
+    list(APPEND PROJECT_SOURCES include/QHotKey/qhotkey_win.cpp)
+elseif(APPLE)
+    list(APPEND PROJECT_SOURCES include/QHotKey/qhotkey_mac.cpp)
+elseif(UNIX)
+    list(APPEND PROJECT_SOURCES include/QHotKey/qhotkey_x11.cpp)
+else()
+    message(FATAL_ERROR "Unsupported platform")
+endif()
 
 # Create the executable
 qt_add_executable(auto-clicker
