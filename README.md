@@ -35,7 +35,7 @@ Follow these steps to build the auto-clicker application:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/autoclicker.git
+   git clone https://github.com/apesci1/autoclicker.git
    cd autoclicker
    ```
 
