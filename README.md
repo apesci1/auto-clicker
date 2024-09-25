@@ -1,6 +1,9 @@
 # Auto Clicker
 
-A simple and efficient auto-clicker application built using Qt. This program allows users to automate mouse clicks with customizable settings.
+A simple auto-clicker application built using Qt.   
+This program allows users to automate mouse clicks with customizable settings.
+
+![auto-clicker-ui](image.png)
 
 ## Features
 
@@ -36,14 +39,16 @@ Follow these steps to build the auto-clicker application:
    cd autoclicker
    ```
 
-2. **Install Qt**: Make sure you have Qt 6.6.1 installed on your system. You can use the Qt Maintenance Tool to install the necessary components.
+2. **Install Qt**: Make sure you have Qt 6.6.1 installed on your system.   
+You can use the Qt Maintenance Tool to install the necessary components.
 
 3. **Open the project in Qt Creator**:
-   - Launch Qt Creator.
-   - Open the `.pro` file located in the project directory.
+   - Launch Qt Creator.  
+   - Open the `CMakelists.txt` file located in the project directory.
 
 4. **Build from source**:
-   - Click on the "Build" button in Qt Creator or use the following command in the terminal:
+   - Click on the "Build" button in Qt Creator  
+   - Alternatively use the following command in the terminal:
      ```bash
      mkdir build
      cd build
@@ -52,6 +57,8 @@ Follow these steps to build the auto-clicker application:
      C:\Qt\6.6.1\mingw_64\bin\windeployqt.exe auto-clicker.exe
      ```
      - mac and x11 cmake parameters will differ slightly.
+
+     **Note**: There is an alternate main branch `main-QHotkey-included` which includes the QHotkey library code, so you don't have to install the library separately. However, please note that this branch may be out of sync with the main branch.
 
 5. **Run the application**:
    - After a successful build, you can run the application directly from Qt Creator or execute the generated binary from the terminal.
