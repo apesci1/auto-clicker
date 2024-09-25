@@ -12,9 +12,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Find the Qt libraries
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
-
-# Include the QHotkey directory
-include_directories(include/QHotKey)
+find_package(qhotkey REQUIRED)
 
 # Set the project sources
 set(PROJECT_SOURCES
@@ -22,21 +20,7 @@ set(PROJECT_SOURCES
     autoclicker.cpp
     autoclicker.h
     autoclicker.ui
-    include/QHotKey/qhotkey.h
-    include/QHotKey/qhotkey_p.h
-    include/QHotKey/qhotkey.cpp
 )
-
-# Determine the platform and include the appropriate QHotkey source file
-if(WIN32)
-    list(APPEND PROJECT_SOURCES include/QHotKey/qhotkey_win.cpp)
-elseif(APPLE)
-    list(APPEND PROJECT_SOURCES include/QHotKey/qhotkey_mac.cpp)
-elseif(UNIX)
-    list(APPEND PROJECT_SOURCES include/QHotKey/qhotkey_x11.cpp)
-else()
-    message(FATAL_ERROR "Unsupported platform")
-endif()
 
 # Create the executable
 qt_add_executable(auto-clicker
@@ -47,6 +31,7 @@ qt_add_executable(auto-clicker
 # Link the Qt libraries
 target_link_libraries(auto-clicker PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
+    qhotkey
 )
 
 set_target_properties(auto-clicker PROPERTIES
@@ -60,3 +45,6 @@ install(TARGETS auto-clicker
 )
 
 qt_finalize_executable(auto-clicker)
+
+# Print message to confirm configuration
+message(STATUS "Configuration complete, ready to build.")
