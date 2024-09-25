@@ -1,5 +1,5 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "autoclicker.h"
+#include "ui_autoclicker.h"
 #include <QRandomGenerator>
 #include <QDebug>
 #include <QCursor>
@@ -8,14 +8,14 @@
 #include <QScreen>
 #include <QKeyEvent>
 #include <QTimer>
-#include <QElapsedTimer>
+
 
 #ifdef Q_OS_WIN
-#include <windows.h> // Include Windows API header for Windows platform
+#include <windows.h>
 #elif defined(Q_OS_MAC)
-#include <ApplicationServices/ApplicationServices.h> // Include macOS API header for macOS platform
+#include <ApplicationServices/ApplicationServices.h>
 #elif defined(Q_OS_LINUX)
-#include <X11/Xlib.h> // Include X11 for Linux platform
+#include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #endif
 
@@ -52,6 +52,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->fixedPositionRadioButton->setChecked(true);
     ui->clickTypeLeftRadioButton->setChecked(true);
     ui->clickControlForverRadioButton->setChecked(true);
+
+    // Connect info button to link to GH
+    connect(ui->infoPushButton, &QPushButton::clicked, this, &MainWindow::handleInfoButton);
 
     elapsedTimer = QElapsedTimer();
 
@@ -404,4 +407,9 @@ void MainWindow::updateCoordinates() {
     QPoint cursorPos = QCursor::pos();
     ui->fixedPositionLabel_x->setText(QString("X: %1").arg(cursorPos.x()));
     ui->fixedPositionLabel_y->setText(QString("Y: %1").arg(cursorPos.y()));
+}
+
+void MainWindow::handleInfoButton()
+{
+    QDesktopServices::openUrl(QUrl("https://github.com/apesci1"));
 }

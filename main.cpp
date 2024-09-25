@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "autoclicker.h"
 #include <QApplication>
 #include <QDebug>
 #include <QHotKey>
