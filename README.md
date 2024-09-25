@@ -7,11 +7,11 @@ This program allows users to automate mouse clicks with customizable settings.
 
 ## Features
 
-- Fixed and random click delays
-- Click position options (on cursor or within a bounding box)
 - Click type selection (left or right click)
-- Hotkey support to start/stop clicking
-- User-friendly interface
+- Click duration selection (forever or stop after condition)
+- Hotkey assignment for starting / stopping clicks
+- Click position (on cursor or random position inside bounding box)
+- Click delay (fixed or randomly within bounds)
 
 ## Table of Contents
 
