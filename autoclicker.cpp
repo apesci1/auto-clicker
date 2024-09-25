@@ -40,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent)
     , fixedDelay(0)
     , randomMinDelay(0)
     , randomMaxDelay(0)
+    , hotkey(nullptr)
 {
     ui->setupUi(this); // Setup the UI components
 
