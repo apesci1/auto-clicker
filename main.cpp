@@ -1,7 +1,7 @@
 #include "autoclicker.h"
 #include <QApplication>
 #include <QDebug>
-#include <QHotKey>
+#include <QHotkey>
 
 int main(int argc, char *argv[])
 {
