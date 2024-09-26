@@ -55,7 +55,7 @@ private:
     int randomMaxDelay;
     QElapsedTimer elapsedTimer;
     QHotkey *hotkey;
-    void simulateMouseClick(const QPoint &position); // Add this line
+    void simulateMouseClick(const QPoint &position);
 };
 
 #endif // AUTOCLICKER_H
