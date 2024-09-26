@@ -8,16 +8,7 @@
 #include <QScreen>
 #include <QKeyEvent>
 #include <QTimer>
-
-
-#ifdef Q_OS_WIN
 #include <windows.h>
-#elif defined(Q_OS_MAC)
-#include <ApplicationServices/ApplicationServices.h>
-#elif defined(Q_OS_LINUX)
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#endif
 
 // Conversion helper function to convert time values to milliseconds
 int convertToMilliseconds(double value, const QString &unit) {
@@ -269,7 +260,6 @@ void MainWindow::performClick()
 void MainWindow::simulateMouseClick(const QPoint &position)
 {
     // Move the cursor to the desired position
-#ifdef Q_OS_WIN
     SetCursorPos(position.x(), position.y());
 
     // Create INPUT structure for mouse event
@@ -293,49 +283,6 @@ void MainWindow::simulateMouseClick(const QPoint &position)
         input.mi.dwFlags = MOUSEEVENTF_RIGHTUP;   // Mouse up event for right click
         SendInput(1, &input, sizeof(INPUT));      // Send mouse up event
     }
-#elif defined(Q_OS_MAC)
-
-    // Move the cursor to the desired position
-    CGEventRef moveEvent = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, CGPointMake(position.x(), position.y()), kCGEventLeftMouseDown);
-    CGEventPost(kCGEventGlobal, moveEvent); // Post mouse move event
-    CFRelease(moveEvent); // Release the move event
-
-    // Create mouse click event
-    CGEventRef clickEvent = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, CGPointMake(position.x(), position.y()), kCGEventLeftMouseDown);
-    CGEventPost(kCGEventGlobal, clickEvent); // Post mouse down event
-    CFRelease(clickEvent); // Release the click event
-
-    // Release mouse up event
-    clickEvent = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseUp, CGPointMake(position.x(), position.y()), kCGEventLeftMouseUp);
-    CGEventPost(kCGEventGlobal, clickEvent); // Post mouse up event
-    CFRelease(clickEvent); // Release the mouse up event
-#elif defined(Q_OS_LINUX)
-
-    // Move the cursor to the desired position
-    Display *display = XOpenDisplay(NULL);
-    if (display) {
-        XWarpPointer(display, None, DefaultRootWindow(display), 0, 0, 0, 0, position.x(), position.y());
-        XFlush(display);
-
-        // Simulate mouse click
-        XEvent event;
-        event.xbutton.type = ButtonPress;
-        event.xbutton.display = display;
-        event.xbutton.window = DefaultRootWindow(display);
-        event.xbutton.x = position.x();
-        event.xbutton.y = position.y();
-        event.xbutton.button = 1;
-        event.xbutton.same_screen = True;
-        XSendEvent(display, InputFocus, True, ButtonPressMask, &event);
-        XFlush(display);
-
-        event.xbutton.type = ButtonRelease; // Set event type to button release
-        XSendEvent(display, InputFocus, True, ButtonReleaseMask, &event); // Send button release event
-        XFlush(display);
-
-        XCloseDisplay(display);
-    }
-#endif
 }
 
 void MainWindow::updateClickType()
