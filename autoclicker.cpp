@@ -10,7 +10,6 @@
 #include <QTimer>
 #include <windows.h>
 
-// Conversion helper function to convert time values to milliseconds
 int convertToMilliseconds(double value, const QString &unit) {
     if (unit == "Second(s)") {
         return value * 1000;  // Convert seconds to milliseconds
@@ -80,7 +79,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    delete ui; // Clean up the UI
+    delete ui;
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
@@ -101,10 +100,10 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 }
 
 void MainWindow::assignToggleKey() {
-    QString toggleKey = ui->toggleKeyEdit->text(); // Get the new toggle key from the UI
+    QString toggleKey = ui->toggleKeyEdit->text();
     if (!toggleKey.isEmpty()) {
-        registerHotkey(); // Register the hotkey with the new key
-        qDebug() << "Toggle key assigned to:" << toggleKey; // Log the assigned key
+        registerHotkey();
+        qDebug() << "Toggle key assigned to:" << toggleKey;
     }
 }
 
@@ -213,7 +212,6 @@ void MainWindow::performClick()
     if (ui->fixedPositionRadioButton->isChecked()) {
         cursorPos = QCursor::pos();
     } else if (ui->dynamicPositionRadioButton->isChecked()) {
-
         // Get bounding box coordinates from UI
         int x1 = ui->dyanmicPositionCoords_x1->value();
         int y1 = ui->dyanmicPositionCoords_y1->value();
