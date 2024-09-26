@@ -196,13 +196,20 @@ void MainWindow::performClick()
     if (!ui->clickControlForverRadioButton->isChecked()) {
         double value = ui->clickControlTimeDoubleSpinBox->value();
         QString unit = ui->clickControlComboBox->currentText();
-        int durationInMilliseconds = convertToMilliseconds(value, unit);
-
-        // Check if the elapsed time exceeds the duration
-        if (elapsedTimer.elapsed() >= durationInMilliseconds) {
-            qDebug() << "Time limit of" << value << unit << "reached. Stopping...";
-            stopClicking();
-            return;
+        if (unit == "Click(s)") {
+            if (clickCount >= maxClicks) {
+                qDebug() << "Max clicks of" << maxClicks << "reached. Stopping...";
+                stopClicking();
+                return;
+            }
+        } else {
+            int durationInMilliseconds = convertToMilliseconds(value, unit);
+            // Check if the elapsed time exceeds the duration
+            if (elapsedTimer.elapsed() >= durationInMilliseconds) {
+                qDebug() << "Time limit of" << value << unit << "reached. Stopping...";
+                stopClicking();
+                return;
+            }
         }
     }
 
